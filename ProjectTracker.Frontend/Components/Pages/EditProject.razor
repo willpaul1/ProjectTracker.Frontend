@@ -1,0 +1,115 @@
+﻿@page "/editproject"
+@page "/editproject/{id:int}"
+@rendermode InteractiveServer
+
+@inject NavigationManager NavigationManager
+@inject ProjectsClient ProjectsClient
+@inject LanguagesClient LanguagesClient
+
+<PageTitle>@title</PageTitle>
+<h3>@title</h3>
+
+@if (languages is null || project is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-4">
+            <EditForm Model="@project" FormName="editProject" OnValidSubmit="HandleSubmitAsync">
+            <DataAnnotationsValidator/>
+            <ValidationSummary />
+            <div class="mb-3">
+                <label for="name" class="form-label">Project Name</label>
+                <InputText id="name" @bind-Value="project.Name" class="form-control"></InputText>
+                <ValidationMessage For="() => project.Name"></ValidationMessage>
+            </div>
+            <div class="mb-3">
+                <label for="language" class="form-label">Coding Language</label>
+                <InputSelect id="langauge" @bind-Value="project.LanguageId" class="form-select">
+                        <option value="">Select a Language</option>
+                        @foreach (var language in languages)
+                        {
+                            <option value="@language.Id">@language.Name</option>
+                        }
+                        </InputSelect>
+                        <ValidationMessage For="() => project.LanguageId"></ValidationMessage>
+                        
+            </div>
+            <div class="mb-3">
+                <label for="level" class="form-label">Difficulty Level</label>
+                <InputText id="level" @bind-Value="project.Level" class="form-control"></InputText>
+                <ValidationMessage For="() => project.Level"></ValidationMessage>
+            </div>
+
+                <div class="mb-3">
+                    <label for="completionDate" class="form-label">Completion Date</label>
+                    <InputDate id="completionDate" @bind-Value="project.CompletionDate" class="form-control"></InputDate>
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a role="button" class="btn btn-secondary" href="/">Cancel</a>
+            </EditForm>
+        </div>
+    </div>
+}
+
+@code
+{
+    [Parameter]
+    public int? Id { get; set; }
+
+    [SupplyParameterFromForm]
+    private ProjectDetails? project { get; set; } 
+
+
+    private Language[]? languages;
+    private string title = string.Empty;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (project is not null)
+        {
+            return;
+        }
+
+        if (Id is not null)
+        {
+            project = await ProjectsClient.GetProjectAsync(Id.Value);
+            title = $"Edit { project.Name }";
+        }
+        else
+        {
+            project = new()
+            {
+                Name = string.Empty,
+                CompletionDate = DateOnly.FromDateTime(DateTime.Now)
+            };
+
+            title = "New Project";
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        languages = await LanguagesClient.GetLanguagesAsync();
+    }
+
+    private async Task HandleSubmitAsync()
+    {
+        ArgumentNullException.ThrowIfNull(project);
+
+        if(Id is null)
+        {
+            await ProjectsClient.AddProjectAsync(project);
+        }
+        else
+        {
+            project.Id = Id.Value;
+            await ProjectsClient.UpdateProjectAsync(project);
+        }
+        
+        NavigationManager.NavigateTo("/");
+    }
+    
+}    

@@ -1,0 +1,29 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\willi\\code\\src\\github.com\\williampaul\\codecademyaspnetcourse\\dotnetacademyprojectfrontend\\ProjectTracker.Frontend\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\ProjectTracker.Frontend.bundle.scp.css",
+      "PackagePath": "staticwebassets\\ProjectTracker.Frontend.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\Users\\willi\\code\\src\\github.com\\williampaul\\codecademyaspnetcourse\\dotnetacademyprojectfrontend\\ProjectTracker.Frontend\\wwwroot\\app.css",
+      "PackagePath": "staticwebassets\\app.css"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.ProjectTracker.Frontend.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.ProjectTracker.Frontend.props",
+      "PackagePath": "build\\ProjectTracker.Frontend.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.ProjectTracker.Frontend.props",
+      "PackagePath": "buildMultiTargeting\\ProjectTracker.Frontend.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.ProjectTracker.Frontend.props",
+      "PackagePath": "buildTransitive\\ProjectTracker.Frontend.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

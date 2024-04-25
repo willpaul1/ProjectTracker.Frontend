@@ -1,0 +1,72 @@
+﻿
+@page "/"
+@inject ProjectsClient Client
+@inject LanguagesClient LanguagesClient
+@attribute [StreamRendering]
+
+<PageTitle>Project Tracker</PageTitle>
+
+<div class="mt-2">
+    <a class="btn btn-primary" role="button" href="/editproject">New Project</a>
+</div>
+
+@if(projects == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-striped table-bordered table-hover mt-3">
+        <thead class="table-dark">
+            <th>Id</th>
+            <th>Name</th>
+            <th>Language</th>
+            <th>Level</th>
+            <th>Completion Date</th>
+            <th></th>
+        </thead>
+        <tbody>
+            @foreach (var project in projects)
+            {
+                <tr>
+                    <td>@project.Id</td>
+                    <td>@project.Name</td>
+                    <td>@project.Language</td>
+                    <td>@project.Level</td>
+                    <td>@project.CompletionDate</td>
+                    <td>
+                        <div class="d-flex">
+                            <a class="btn btn-primary me-2" role="button" href="@ProjectUrl(project.Id)">
+                                <i class="bi bi-pencil"></i>                                
+                            </a>
+                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="@GetDeleteModalId(project)">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                        </div>
+                        <DeleteProject Project="@project"/>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+            
+    </table>
+}
+
+@code{
+
+    private ProjectSummary[]? projects;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        projects = await Client.GetProjectsAsync();
+    }
+
+    private static string ProjectUrl(int id) => $"/editproject/{id}";
+
+    private string GetDeleteModalId(ProjectSummary project)
+    {
+        return $"#{DeleteProject.GetModalId(project)}";
+    }
+}
+
